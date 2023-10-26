@@ -1,7 +1,6 @@
 {
   "name": "financial-dashboard",
   "version": "0.0.0",
-  "homepage": "https://kuhai-anna.github.io/financial-dashboard/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
