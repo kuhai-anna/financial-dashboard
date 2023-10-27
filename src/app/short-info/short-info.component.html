@@ -1,8 +1,28 @@
 <div *ngIf="data">
-  <h2>Short Information</h2>
-  <ul>
-    <li *ngFor="let item of data">
-      {{ item.user }}
-    </li>
-  </ul>
+	<h2>Short Information</h2>
+
+	<p>
+		Загальна кількість виданих кредитів: <span>{{ totalIssuedCredits }}</span>
+	</p>
+	<p>
+		Середня сума видачі кредитів: <span>{{ averageCreditAmount }}</span>
+	</p>
+
+	<p>
+		Загальна сума виданих кредитів: <span>{{ totalIssuedCreditAmount }}</span>
+	</p>
+	<p>
+		Загальна сума нарахованих відсотків: <span>{{ totalInterestAmount }}</span>
+	</p>
+	<p>
+		Кількість повернених кредитів: <span>{{ returnedCredits }}</span>
+	</p>
+	<p>Кількість виданих кредитів по місяцях:</p>
+	<ul>
+		<li *ngFor="let item of groupIssuedCreditsByMonth">{{ item.month }} - {{ item.value }}</li>
+	</ul>
+	<p>Кількість повернених кредитів по місяцях:</p>
+	<ul>
+		<li *ngFor="let item of groupReturnedCreditsByMonth">{{ item.month }} - {{ item.value }}</li>
+	</ul>
 </div>
