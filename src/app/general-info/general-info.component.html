@@ -1,8 +1,35 @@
 <div *ngIf="data">
 	<h2>General Information</h2>
-	<ul>
-		<li *ngFor="let item of data">
-			{{ item.user }}
-		</li>
-	</ul>
+
+	<input type="date" [(ngModel)]="startDate" />
+	<input type="date" [(ngModel)]="endDate" />
+
+	<button (click)="filterByIssuanceDate()">Фільтрувати за датою видачі кредиту</button>
+	<button (click)="filterByReturnDate()">Фільтрувати за датою повернення кредиту</button>
+	<button (click)="filterByOverdueCredits()">Фільтрувати для просрочених кредитів</button>
+
+	<button (click)="clearFilteredData()">Очистити фільтр</button>
+
+	<table>
+		<thead>
+			<tr>
+				<th>User</th>
+				<th>Issuance Date</th>
+				<th>Return Date</th>
+				<th>Actual Return Date</th>
+				<th>Body</th>
+				<th>Percent</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let item of filteredData">
+				<td>{{ item.user }}</td>
+				<td>{{ item.issuance_date }}</td>
+				<td>{{ item.return_date }}</td>
+				<td>{{ item.actual_return_date }}</td>
+				<td>{{ item.body }}</td>
+				<td>{{ item.percent }}</td>
+			</tr>
+		</tbody>
+	</table>
 </div>
