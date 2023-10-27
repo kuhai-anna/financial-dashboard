@@ -19,6 +19,8 @@ export class GeneralInfoComponent implements OnInit {
 		this.dataService.getGeneralInfoData().subscribe((result: any) => {
 			this.data = result;
 			this.filteredData = this.data;
+			this.startDate = null;
+			this.endDate = null;
 		});
 	}
 
@@ -26,30 +28,29 @@ export class GeneralInfoComponent implements OnInit {
 	filterByIssuanceDate() {
 		const start = this.convertToDate(this.startDate);
 		const end = this.convertToDate(this.endDate);
+		this.filteredData = [];
 
-		this.data.forEach(item => {
+		this.data?.forEach(item => {
 			const issuanceDate = this.convertToDate(item.issuance_date);
+
 			if (this.isDateInRange(issuanceDate, start, end)) {
-				this.filteredItems.push(item);
+				this.filteredData.push(item);
 			}
 		});
-
-		this.filteredData = this.filteredItems;
 	}
 
 	// Фільтр за датою повернення кредиту (actual_return_date)
 	filterByReturnDate() {
 		const start = this.convertToDate(this.startDate);
 		const end = this.convertToDate(this.endDate);
+		this.filteredData = [];
 
-		this.filteredData.forEach(item => {
+		this.data?.forEach(item => {
 			const actualReturnDate = this.convertToDate(item.actual_return_date);
 			if (this.isDateInRange(actualReturnDate, start, end)) {
-				this.filteredItems.push(item);
+				this.filteredData.push(item);
 			}
 		});
-
-		this.filteredData = this.filteredItems;
 	}
 
 	// Фільтр для просрочених кредитів
@@ -57,18 +58,17 @@ export class GeneralInfoComponent implements OnInit {
 		const start = this.convertToDate(this.startDate);
 		const end = this.convertToDate(this.endDate);
 		const currentDate = new Date();
+		this.filteredData = [];
 
-		this.filteredData.forEach(item => {
+		this.data?.forEach(item => {
 			const returnDate = this.convertToDate(item.return_date);
 			const actualReturnDate = this.convertToDate(item.actual_return_date);
 			if (this.isDateInRange(returnDate, start, end)) {
 				if (actualReturnDate > returnDate || returnDate < currentDate) {
-					this.filteredItems.push(item);
+					this.filteredData.push(item);
 				}
 			}
 		});
-
-		this.filteredData = this.filteredItems;
 	}
 
 	convertToDate(dateString: any): Date {
