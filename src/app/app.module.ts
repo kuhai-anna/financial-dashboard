@@ -8,10 +8,11 @@ import { CommonModule } from '@angular/common';
 import { GeneralInfoComponent } from './general-info/general-info.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { ShortInfoComponent } from './short-info/short-info.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
 	declarations: [AppComponent, GeneralInfoComponent, ShortInfoComponent, NavigationComponent],
-	imports: [BrowserModule, AppRoutingModule, HttpClientModule, CommonModule],
+	imports: [BrowserModule, AppRoutingModule, HttpClientModule, CommonModule, FormsModule],
 	providers: [],
 	bootstrap: [AppComponent],
 })
