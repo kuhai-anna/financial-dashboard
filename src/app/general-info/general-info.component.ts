@@ -9,6 +9,9 @@ import { DataService } from '../../services/data.service';
 export class GeneralInfoComponent implements OnInit {
 	data: any[] = [];
 	filteredData: any[] = [];
+	filteredItems: any[] = [];
+	startDate: any = '';
+	endDate: any = '';
 
 	constructor(private dataService: DataService) {}
 
@@ -16,39 +19,69 @@ export class GeneralInfoComponent implements OnInit {
 		this.dataService.getGeneralInfoData().subscribe((result: any) => {
 			this.data = result;
 			this.filteredData = this.data;
-			console.log('General Info Data: ', this.data[0]);
 		});
 	}
 
-	// Логіка фільтрації за датою видачі кредиту (issuance_date)
-	filterByIssuanceDate(startDate: Date, endDate: Date) {
-		this.filteredData = this.data.filter(item => {
-			const issuanceDate = new Date(item.issuance_date);
-			return issuanceDate >= startDate && issuanceDate <= endDate;
-		});
-	}
+	// Фільтр періоду дат видачі кредиту (issuance_date)
+	filterByIssuanceDate() {
+		const start = this.convertToDate(this.startDate);
+		const end = this.convertToDate(this.endDate);
 
-	// Логіка фільтрації за датою повернення кредиту (actual_return_date)
-	filterByReturnDate(startDate: Date, endDate: Date) {
-		this.filteredData = this.data.filter(item => {
-			if (item.actual_return_date) {
-				const returnDate = new Date(item.actual_return_date);
-				return returnDate >= startDate && returnDate <= endDate;
+		this.data.forEach(item => {
+			const issuanceDate = this.convertToDate(item.issuance_date);
+			if (this.isDateInRange(issuanceDate, start, end)) {
+				this.filteredItems.push(item);
 			}
-			return false;
 		});
+
+		this.filteredData = this.filteredItems;
 	}
 
-	// Логіка фільтрації для просрочених кредитів
+	// Фільтр за датою повернення кредиту (actual_return_date)
+	filterByReturnDate() {
+		const start = this.convertToDate(this.startDate);
+		const end = this.convertToDate(this.endDate);
+
+		this.filteredData.forEach(item => {
+			const actualReturnDate = this.convertToDate(item.actual_return_date);
+			if (this.isDateInRange(actualReturnDate, start, end)) {
+				this.filteredItems.push(item);
+			}
+		});
+
+		this.filteredData = this.filteredItems;
+	}
+
+	// Фільтр для просрочених кредитів
 	filterByOverdueCredits() {
+		const start = this.convertToDate(this.startDate);
+		const end = this.convertToDate(this.endDate);
 		const currentDate = new Date();
-		this.filteredData = this.data.filter(item => {
-			if (item.actual_return_date) {
-				const returnDate = new Date(item.return_date);
-				const actualReturnDate = new Date(item.actual_return_date);
-				return actualReturnDate > returnDate || returnDate < currentDate;
+
+		this.filteredData.forEach(item => {
+			const returnDate = this.convertToDate(item.return_date);
+			const actualReturnDate = this.convertToDate(item.actual_return_date);
+			if (this.isDateInRange(returnDate, start, end)) {
+				if (actualReturnDate > returnDate || returnDate < currentDate) {
+					this.filteredItems.push(item);
+				}
 			}
-			return false;
 		});
+
+		this.filteredData = this.filteredItems;
+	}
+
+	convertToDate(dateString: any): Date {
+		return new Date(dateString);
+	}
+
+	isDateInRange(date: Date, start: Date, end: Date): boolean {
+		return date.getTime() >= start.getTime() && date.getTime() <= end.getTime();
+	}
+
+	clearFilteredData() {
+		this.filteredData = this.data;
+		this.startDate = null;
+		this.endDate = null;
 	}
 }
