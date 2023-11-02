@@ -3,20 +3,20 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+	providedIn: 'root',
 })
 export class DataService {
-  constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient) {}
 
-  getGeneralInfoData(): Observable<any> {
-    const url =
-      'https://raw.githubusercontent.com/LightOfTheSun/front-end-coding-task-db/master/db.json';
-    return this.http.get(url);
-  }
+	getGeneralInfoData(): Observable<any> {
+		const url =
+			'https://raw.githubusercontent.com/LightOfTheSun/front-end-coding-task-db/master/db.json';
+		return this.http.get(url);
+	}
 
-  getShortInfoData(): Observable<any> {
-    const url =
-      'https://raw.githubusercontent.com/LightOfTheSun/front-end-coding-task-db/master/db.json';
-    return this.http.get(url);
-  }
+	getShortInfoData(): Observable<any> {
+		const url =
+			'https://raw.githubusercontent.com/LightOfTheSun/front-end-coding-task-db/master/db.json';
+		return this.http.get(url);
+	}
 }
