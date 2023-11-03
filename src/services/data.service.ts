@@ -8,15 +8,9 @@ import { Observable } from 'rxjs';
 export class DataService {
 	constructor(private http: HttpClient) {}
 
-	getGeneralInfoData(): Observable<any> {
+	getInfoData(): Observable<DataTableInfo> {
 		const url =
 			'https://raw.githubusercontent.com/LightOfTheSun/front-end-coding-task-db/master/db.json';
-		return this.http.get(url);
-	}
-
-	getShortInfoData(): Observable<any> {
-		const url =
-			'https://raw.githubusercontent.com/LightOfTheSun/front-end-coding-task-db/master/db.json';
-		return this.http.get(url);
+		return this.http.get<DataTableInfo>(url);
 	}
 }
